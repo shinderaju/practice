@@ -2,7 +2,8 @@ package practice;
 import java.util.Scanner;
 public class Welcome
 { 
-              public static void main(String []args){
+              public static void main(String []args)
+		{
     
                        String st="hello username,how are you?";
                        System.out.println("Enter user name");
