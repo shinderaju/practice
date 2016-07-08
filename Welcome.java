@@ -12,9 +12,7 @@ public class Welcome
                        Utility u = new Utility();
                        u.replace(st,uname);
               }
-  
-
-
+ 
   
 }
 
