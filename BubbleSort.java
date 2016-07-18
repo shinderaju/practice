@@ -5,11 +5,11 @@ public class BubbleSort
 public static void main(String []args)
 {
             
-            System.out.println("how many element you want to enter");
+            System.out.println("how many number you want to enter");
             Scanner sc = new Scanner(System.in);
             int n = sc.nextInt();
             int[] words = new int[n];
-            System.out.println("Enter the elements");
+            System.out.println("Enter the numbers");
            
             for(int i=0;i<n;i++)
             {

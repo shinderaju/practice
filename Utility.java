@@ -1,7 +1,24 @@
 package practice;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 public class Utility{
+	private final String NAME = "<<name>>";
+	private final String FULLNAME = "<<full name>> ";
+	private final String MOBILE_NO = "xxxxxxxxxx";
+	private final String DATE = "01/01/2016";
+	Scanner sc = new Scanner(System.in);
+	public Utility(){
+		bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+	}
 
+
+	BufferedReader bufferedReader,br;
 //function to find triple having sum 0      
 public void findTriple(int list[],int n)
 {
@@ -190,11 +207,12 @@ public long startStopWatch(){
 }
 
 //return elapsed time between start and end of task
-public void elapsde(long start)
+public long elapsde(long start)
 {
         long stop = System.currentTimeMillis();
         long elap= (stop-start)/1000;
         System.out.println("elapsed time is "+elap+" seconds");
+        return elap;
 }
 
 //create and display 2D array
@@ -202,7 +220,7 @@ public void createArray(int m,int n)
 {
         int [][] array= new int[m][n]; 
         Scanner sc= new Scanner(System.in);
-        System.out.println("Enter array elements");
+        System.out.println("Enter"+(m*n)+" array elements");
         for(int i=0;i<m;i++)
         {
           for(int j=0;j<n;j++)
@@ -249,6 +267,36 @@ public static int bSearch(String[] words, String value, int min, int max)
            return bSearch(words, value, mid + 1, max);
            }
         }
+}//end binary search
+
+//binary search when you don't know min and max index
+public static int bSearch(int[] words, int value) 
+{
+      return bSearch(words, value, 0, words.length - 1);
+}
+//binary search when you know min and max index    
+public static int bSearch(int[] words, int value, int min, int max) 
+{
+      if (min > max) 
+      {
+        return -1;
+      }
+      int mid = (max + min) / 2;
+      if (words[mid]==value) 
+      {
+        return mid;
+      } 
+      else 
+      { 
+        if(words[mid]>value) 
+        {
+          return bSearch(words, value, min, mid - 1);
+        } 
+        else 
+        {
+         return bSearch(words, value, mid + 1, max);
+         }
+      }
 }
 
 //find prime factors of number			
@@ -272,16 +320,17 @@ public void BubbleSort(int[] arr,int n)
 {
          int temp;
         
-         for(int r=1;r<=n-1;r++)
+
+         for(int i=0;i<n-1;i++)
          {
-           for(int i=0;i<=n-i-1;i++)
+           for(int j=0;j<n-1;j++)
            {
-             if(arr[i]>arr[i+1])
+             if(arr[j]>arr[j+1])
              {
      
-            	 temp=arr[i];
-            	 arr[i]=arr[i+1];
-            	 arr[i+1]=temp;
+            	 temp=arr[j];
+            	 arr[j]=arr[j+1];
+            	 arr[j+1]=temp;
              }   
            }
          }
@@ -291,9 +340,9 @@ public void BubbleSort(String[] arr,int n)
 {
          String temp;
         
-         for(int i=0;i<n;i++)
+         for(int i=0;i<n-1;i++)
          {
-           for(int j=0;j<=n-i-1;j++)
+           for(int j=0;j<n-1;j++)
            {
              if(arr[j].compareTo(arr[j+1])>0)
              {
@@ -335,6 +384,135 @@ public void insertionSort(String[] arr,int n)
         }
       }
 }
+//convert string to integer
+public int[] convertStringtoInt(String[] nStrings){
+	int len = nStrings.length;
+	int [] nums = new int[len];
+	for(int i = 0;i < len;i++){
+		nums[i] = Integer.parseInt(nStrings[i]);
+		}
+	return nums;
+}
+
+
+
+//take input word
+public String inputWord(){
+	try{
+		return bufferedReader.readLine();
+	}
+	catch(IOException exception){
+		System.out.println(exception.getMessage());
+	}
+	return "";
+}
+//return the data of file 
+public String getFileText(String fileName){
+
+	try{
+
+		br=new BufferedReader(new FileReader(fileName));
+		StringBuilder sb=new StringBuilder();
+		String line=br.readLine();
+		while(line!=null){
+			sb.append(line);
+			sb.append(System.lineSeparator());
+			line=br.readLine();
+		}
+		return sb.toString();
+	 }
+	catch(Exception exception){
+		return null;
+	}
+	finally{
+		try{
+			br.close();
+		}
+		catch(IOException exception){
+		}	
+	}
+}
+
+//format date object in this format 01/12/2016 
+public String getFormatedDate(Date date){
+	SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
+	return sdf.format(date);
+}
+//method to replace user deatail of string
+public String RegexReplace(UserDetails userDetails,String message){
+	Pattern p = Pattern.compile(NAME);
+   		Matcher m = p.matcher(message); 
+   		message = m.replaceAll(userDetails.getfName());
+
+	p = Pattern.compile(FULLNAME);
+	m = p.matcher(message); 
+	message = m.replaceAll(userDetails.getfName()+" "+userDetails.getlName());
+
+	p = Pattern.compile(MOBILE_NO);
+	m = p.matcher(message); 
+	message = m.replaceAll(userDetails.mobileNo());
+
+	p = Pattern.compile(DATE);
+	m = p.matcher(message); 
+	message = m.replaceAll(userDetails.date());
+
+	return message;
+}
+
+
+//search no using Binary search
+public void guessNo(int no) 
+{
+	Random r=new Random();
+	String op="";
+	int power=1,i;
+	//calculate power of u ser input no
+	for(i=1;i<=no;i++) 
+	{
+		power=power*2;
+	}
+	int first=0,last=power-1,count=0;
+	int middle=(first+last)/2;
+	//create index of power size
+	int list[]=new int[power]; 
+	for(i=0;i<=last;i++)
+	{
+		//random no are inserted in array
+		list[i]=r.nextInt(power-1); 
+	}
+	while(first<=last)
+	{
+		System.out.println("is your no is?if yes Enter yes..else enter high or low:"+middle);
+		count++;
+		op=sc.next();
+		//if no is low change last
+		if(op.equals("low"))	
+		{
+			last=middle-1;
+			count++;
+		}
+		//if no is high change first
+		else if(op.equals("high")) 
+		{
+			first=middle+1;
+			count++;
+		}
+		//if match found
+		else if(op.equals("yes"))	
+		{
+			System.out.println("Match found");
+			break;
+		}	
+		//wrong input other than high low and yes
+		else										
+			System.out.println("wrong input");
+
+			middle=(first+last)/2;
+	}
+	
+		System.out.println("No of attempts to find "+count);
+}//end of guessNo()
+
 
 }
 

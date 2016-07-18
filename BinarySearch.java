@@ -28,7 +28,7 @@ public static void main(String []args)
             String value = sc.next();
             int val=u.bSearch(words,value);
             if(val!=-1)
-               System.out.println("Word " + value + "found at position = " + val);
+               System.out.println("Word " + value + " found at position = " + val);
             else
                System.out.println("word "+value+" not found");
 
